@@ -308,3 +308,88 @@ add_filter( 'attachment_link', 'toolbox_enhanced_image_navigation' );
 /**
  * This theme was built with PHP, Semantic HTML, CSS, love, and a Toolbox.
  */
+
+	// start custom post type code
+
+	function custom_photoset_init() {
+	  $labels = array(
+	    'name' => _x('Photo Sets', 'post type general name', 'your_text_domain'),
+	    'singular_name' => _x('Photo Set', 'post type singular name', 'your_text_domain'),
+	    'add_new' => _x('Add New', 'photoset', 'your_text_domain'),
+	    'add_new_item' => __('Add New Photo Set', 'your_text_domain'),
+	    'edit_item' => __('Edit Photo Set', 'your_text_domain'),
+	    'new_item' => __('New Photo Set', 'your_text_domain'),
+	    'all_items' => __('All Photo Sets', 'your_text_domain'),
+	    'view_item' => __('View Photo Set', 'your_text_domain'),
+	    'search_items' => __('Search Photo Sets', 'your_text_domain'),
+	    'not_found' =>  __('No photo sets found', 'your_text_domain'),
+	    'not_found_in_trash' => __('No photo sets found in Trash', 'your_text_domain'), 
+	    'parent_item_colon' => '',
+	    'menu_name' => __('Photo Sets', 'your_text_domain')
+
+	  );
+	  $args = array(
+	    'labels' => $labels,
+	    'public' => true,
+	    'publicly_queryable' => true,
+	    'show_ui' => true, 
+	    'show_in_menu' => true, 
+	    'query_var' => true,
+	    'rewrite' => array( 'slug' => _x( 'photoset', 'URL slug', 'your_text_domain' ) ),
+	    'capability_type' => 'post',
+	    'has_archive' => true, 
+	    'hierarchical' => false,
+	    'menu_position' => null,
+	    'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'categories', 'comments', 'custom-fields' )
+	  ); 
+	  register_post_type('my_photosets', $args);
+	/* IMPORTIONT: Remember this line! */
+	    // flush_rewrite_rules( false );/* Please read "Update 2" before adding this line */
+	}
+	// happens every time somebody hits wordpress
+	add_action( 'init', 'custom_photoset_init');
+	
+	// end custom post type code
+	
+	// begin custom tags taxonomy code
+	
+	function my_tags_taxonomies_photoset() {
+		// create a new taxonomy
+		register_taxonomy(
+			'photosettags',
+			'my_photosets',
+			array(
+				'label' => __( 'Photo Set Tags' ),
+				'rewrite' => array( 'slug' => 'photosettags' )
+			)
+		);
+	}
+	add_action( 'init', 'my_tags_taxonomies_photoset' );
+	
+	// end custom tags taxonomy code
+	
+	function my_taxonomies_photoset() {
+		$labels = array(
+			'name'              => _x( 'Photo Set Categories', 'taxonomy general name' ),
+			'singular_name'     => _x( 'Photo Set Category', 'taxonomy singular name' ),
+			'search_items'      => __( 'Search Photo Set Categories' ),
+			'all_items'         => __( 'All Photo Set Categories' ),
+			'parent_item'       => __( 'Parent Photo Set Category' ),
+			'parent_item_colon' => __( 'Parent Photo Set Category:' ),
+			'edit_item'         => __( 'Edit Photo Set Category' ), 
+			'update_item'       => __( 'Update Photo Set Category' ),
+			'add_new_item'      => __( 'Add New Photo Set Category' ),
+			'new_item_name'     => __( 'New Photo Set Category' ),
+			'menu_name'         => __( 'Photo Set Categories' ),
+		);
+		$args = array(
+			'labels' => $labels,
+			'show_in_nav_menus' => true,
+			'hierarchical' => true,
+		);
+		register_taxonomy( 'photoset_category', 'my_photosets', $args );
+	}
+	add_action( 'init', 'my_taxonomies_photoset', 0 );
+
+
+
