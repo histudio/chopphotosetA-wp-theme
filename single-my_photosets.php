@@ -11,33 +11,59 @@ get_header(); ?>
 		<div id="primary">
 			<div id="content" role="main">
 			
-			<h1>single-my_photosets</h1>
-
 			<?php while ( have_posts() ) : the_post(); ?>
 
 				
 
 				<!-- Do my own stuff -->
 				
+				<div id="slide_container">
+					<div id="slide_images">
 				<?php
 					$images = get_children( array( 'post_parent' => $post->ID, 'post_type' => 'attachment', 'post_mime_type' => 'image', 'orderby' => 'menu_order', 'order' => 'ASC' ) );
+					
 					if ( $images ) :
 						$total_images = count( $images );
 						
 						foreach ($images as $image):
 							# code...
 								$image = array_shift( $images );
-								$image_img_tag = wp_get_attachment_image( $image->ID, 'thumbnail' );
+								$image_img_tag = wp_get_attachment_image( $image->ID, 'large' );
+								
 				?>
 				
-				<figure class="gallery-thumb">
-					<a href="<?php the_permalink(); ?>"><?php echo $image_img_tag; ?></a>
-				</figure><!-- .gallery-thumb -->
+				<?php echo $image_img_tag; ?>
 
 
 					<?php endforeach; ?>
 				
 				<?php endif; ?>
+				
+				</div><!-- #slide_images -->
+			</div><!-- #slide_container -->
+
+				<p id="slide_controls">
+				<?php 
+					
+					for ($i=1; $i<=$total_images; $i++)
+					  {
+					  echo "<span>Image " . $i . "</span>";
+					  };
+				
+				?>
+				</p>
+
+				<script type="text/javascript" charset="utf-8">
+					
+					jQuery(document).ready(function() {
+					  jQuery('#slide_controls').on('click', 'span', function(){
+					    jQuery("#slide_images").css("transform","translateX("+jQuery(this).index() * -640+"px)");
+					    jQuery("#slide_controls span").removeClass("selected");
+					    jQuery(this).addClass("selected");
+					  });
+					});
+					
+				</script>
 
 				<?php toolbox_content_nav( 'nav-below' ); ?>
 
@@ -48,6 +74,8 @@ get_header(); ?>
 				?>
 
 			<?php endwhile; // end of the loop. ?>
+
+				
 
 			</div><!-- #content -->
 		</div><!-- #primary -->
