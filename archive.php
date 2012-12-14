@@ -16,6 +16,8 @@ get_header(); ?>
 		<section id="primary">
 			<div id="content" role="main">
 
+				<h1>archive.php</h1>
+
 			<?php if ( have_posts() ) : ?>
 
 				<header class="page-header">

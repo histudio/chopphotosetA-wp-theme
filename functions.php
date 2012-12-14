@@ -402,6 +402,9 @@ add_filter( 'attachment_link', 'toolbox_enhanced_image_navigation' );
 		register_taxonomy( 'photoset_category', 'my_photosets', $args );
 	}
 	add_action( 'init', 'my_taxonomies_photoset', 0 );
+	
+	
+	add_theme_support( 'post-thumbnails' ); 
 
 
 
