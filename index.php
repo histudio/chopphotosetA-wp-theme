@@ -16,7 +16,7 @@ get_header(); ?>
 
 		<div id="primary">
 			<div id="content" role="main">
-
+			<h1>Hello Everybody</h1>
 			<?php if ( have_posts() ) : ?>
 
 				<?php toolbox_content_nav( 'nav-above' ); ?>
